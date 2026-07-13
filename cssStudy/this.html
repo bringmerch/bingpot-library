@@ -1,0 +1,31 @@
+<!--
+이 페이지에서 배울 수 있는 점 :
+1. onclick 안에 js를 넣었을 때,this는 해당 태그 element 객체를 의미한다.
+2. function으로 할려면 event 태그를 넘겨야된다.
+    event.target이 해당 element 객체를 의미한다.
+3. on???에서 함수를 호출
+    onclick = "함수명()"
+
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>web1</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<input type="button" value="night" onclick="functionOne(event)">
+<input type="button" value="what~?" onclick="functionTwo(this)">
+<input type="button" value="day" onclick="alert(this.value)">
+</body>
+</html>
+
+<script>
+    functionOne = function (e) {
+        alert(e.target.value);
+    }
+
+    functionTwo = function (what) {
+        alert(what.value);
+    }
+</script>

@@ -1,0 +1,25 @@
+<!--
+이 페이지에서 배울 수 있는 점 :
+1.style Attribute의 property Value를 querySelector()를 통해 가져올 때는
+    1-1. 케밥케이스 -> 카멜케이스로 가져온다.
+    1-2. 따옴표로 감싸야한다.
+2.
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>web1</title>
+    <meta charset="utf-8">
+</head>
+<body style="background-color: green">
+<input type="button" value="night" onclick="
+    document.querySelector('body').style.backgroundColor='black';
+    document.querySelector('body').style.color='white';
+">
+<input type="button" value="day" onclick="
+    document.querySelector('body').style.backgroundColor='white';
+    document.querySelector('body').style.color='black';
+">
+</body>
+</html>
+<p style="background: blue"> to track changes to code: share project on github or gitlab </p>
