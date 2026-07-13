@@ -57,8 +57,20 @@ function Nav(props) {
 }
 
 function App() {
-    const mode = 'WELCOME';
-    // ㄴ 얘가 바뀔 때 App()이 한번더실행되면서 태그가 바뀌는 걸 하고 싶다 -> useState 사용
+    // const mode = 'WELCOME';
+    // // ㄴ 얘같은 지역변수가 바뀔 때 App()이 한번더실행되면서 태그가 바뀌는 걸 하고 싶다 -> useState 사용
+/*
+    // VERSION 1. 기본
+    const _mode = useState('WELCOME'); // WELCOME = 상태초기값
+    // useState = 배열리턴
+    //  0 = 상태의 값을 읽을 때 쓰는 데이터
+    //  1 = 그 상태의 값을 변경할때쓰는 함수
+    const mode = _mode[0];
+    const setMode = _mode[1]; // setMode를 통해 모드의 값을 바꿀 수 있다
+*/
+    // VERSION 2. (conventional)
+    const [mode, setMode] = useState('WELCOME');
+
     const topics = [
           {id: 1, title: 'html', body:'html is...'},
           {id: 2, title: 'css', body:'css is...'},
@@ -76,10 +88,12 @@ function App() {
     return (
       <div>
         <Header title="REACT!!" onChangeMode={()=> {
-            // mode = 'WELCOME'; -> 일케하면 안되는이유 : App 함수는 변하지 않기 때문에 Return 값에는 변화가 없다.
+            // mode = 'WELCOME'; -> 일케하면 안되는이유 : App 함수는 변하지 않기 때문에 Return 값에는 변화가 없다 = useState 쓰는 이유
+            setMode('WELCOME'); // state를 바꿈으로써 App 컴포넌트가 다시 실행됨.
         }}></Header>
         <Nav topics={topics} onChangeMode={() => {
-            mode='READ';
+            // mode='READ';
+            setMode('READ');
         }}></Nav>  {/* 표현식: 중괄호로 표현 */}
           {content}
       </div>
