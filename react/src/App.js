@@ -37,7 +37,7 @@ function Nav(props) {
             <li key={t.id}>
                 <a href={'/read/' + t.id}
                    id={t.id}
-                   onClick={event => {
+                   onClick={event => { // 리액트는 이벤트발생 시 콜백함수한테 첫번째인자로 event 객체를 넘긴다.
                     event.preventDefault();
                     props.onChangeMode(event.target.id); // target : 이벤트를 유발시킨 태그 <a>
                    }}>
