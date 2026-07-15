@@ -1,17 +1,16 @@
 import './App.css';
 import {useState} from 'react'; // useState는 react에서 기본적으로 제공하는 Hook이다.
 
-
-
 function Article(props) {
-  return (
-      <article>
-      <h2>{props.title}</h2>
-        {props.body}
-      </article>
-  )
+    return (
+        <article>
+            <h2>
+                {props.title}
+            </h2>
+            {props.body}
+        </article>
+    )
 }
-
 
 // 사용자 정의 태그 만드는 법 : 함수 만든다.
 function Header(props) { // props = {title: "REACT!!"}
@@ -39,7 +38,7 @@ function Nav(props) {
                    id={t.id}
                    onClick={event => { // 리액트는 이벤트발생 시 콜백함수한테 첫번째인자로 event 객체를 넘긴다.
                     event.preventDefault();
-                    props.onChangeMode(event.target.id); // target : 이벤트를 유발시킨 태그 <a>
+                    props.onChangeMode(Number(event.target.id)); // target : 이벤트를 유발시킨 태그 <a>
                    }}>
                     {t.title}
                 </a>
@@ -56,47 +55,162 @@ function Nav(props) {
     )
 }
 
-function App() {
-    // const mode = 'WELCOME';
-    // // ㄴ 얘같은 지역변수가 바뀔 때 App()이 한번더실행되면서 태그가 바뀌는 걸 하고 싶다 -> useState 사용
-/*
-    // VERSION 1. 기본
-    const _mode = useState('WELCOME'); // WELCOME = 상태초기값
-    // useState = 배열리턴
-    //  0 = 상태의 값을 읽을 때 쓰는 데이터
-    //  1 = 그 상태의 값을 변경할때쓰는 함수
-    const mode = _mode[0];
-    const setMode = _mode[1]; // setMode를 통해 모드의 값을 바꿀 수 있다
-*/
-    // VERSION 2. (conventional)
-    const [mode, setMode] = useState('WELCOME');
+function Create(props) {
+    return (
+        <article>
+            <h2>Create</h2>
+            <form onSubmit={event => {
+                event.preventDefault();
+                const title = event.target.title.value; // name이 title인 tag(input)의 value
+                const body = event.target.body.value;
+                props.onCreate(title, body );
+            }}>
+                <p><input type="text" name="title" placeholder="title"/></p>
+                <p><textarea name="body" placeholder="body"></textarea></p>
+                <p><input type="submit" value="Create"/></p>
+            </form>
+        </article>);
+}
 
-    const topics = [
-          {id: 1, title: 'html', body:'html is...'},
-          {id: 2, title: 'css', body:'css is...'},
-          {id: 3, title: 'js', body:'js is...'},
-      ];
+function Update(props) {
+    const [title, setTitle] = useState(props.title);
+    const [body, setBody] = useState(props.body);
+    return (
+        <article>
+            <h2>Update</h2>
+            <form onSubmit={event => {
+                event.preventDefault();
+                const title = event.target.title.value; // name이 title인 tag(input)의 value
+                const body = event.target.body.value;
+                props.onUpdate(title, body);
+            }}>
+                <p><input type="text" name="title" value={title} onChange={
+                    event => {
+                        setTitle(event.target.value);
+                    }
+                } placeholder="title"/></p>
+                <p><textarea name="body" value={body} onChange={
+                    event => {
+                        setBody(event.target.value);
+                    }
+                } placeholder="body"></textarea></p>
+                <p><input type="submit" value="Update"/></p>
+            </form>
+        </article>);
+}
+
+function App() {
+    const [mode, setMode] = useState('WELCOME');
+    const [id, setId] = useState(null);
+    const [nextId, setNextId] = useState(4);
+
+    const [topics, setTopics] = useState([
+        {id: 0, title: 'html', body: 'html is...'},
+        {id: 1, title: 'css', body: 'css is...'},
+        {id: 2, title: 'js', body: 'js is...'},
+    ]);
 
     let content = null;
+    let contextControl = null; // 맥락에따라 노출되는 컨텐츠
 
     if (mode === "WELCOME") {
         content = <Article title="Welcome" body="Hello, WEB"></Article>;
     } else if (mode === "READ") {
-        content = <Article title="Read" body="Hello, Reader"></Article>;
+        let title, body = null;
+
+        for (let i = 0; i < topics.length; i++) {
+            if (topics[i].id === id) {
+                title = topics[i].title;
+                body = topics[i].body;
+            }
+        }
+        content = <Article title={title} body={body}></Article>;
+        contextControl =
+            <>
+                <li>
+                    <a href={'/update/' + id} onClick={event => {
+                        event.preventDefault();
+                        setMode('UPDATE');
+                    }}>
+                        Update
+                    </a>
+                </li>
+                <li>
+                     <input type="button" value="Delete" onClick={() => {
+                        const newTopics = []
+                        for (let i = 0; i < topics.length; i++) {
+                            if (topics[i].id !== id) {
+                                newTopics.push(topics[i]);
+                            }
+                        }
+                        setTopics(newTopics);
+                        setMode('WELCOME');
+                    }
+                    }
+                    />
+                </li>
+            </>;
+    } else if (mode === 'CREATE') {
+        content = <Create onCreate={(_title, _body) => {
+            const newTopic = {id: nextId, title: _title, body: _body};
+            const newTopics = [...topics];
+            newTopics.push(newTopic);
+            setTopics(newTopics);
+            setMode('READ');
+            setId(nextId);
+            setNextId(nextId + 1);
+        }}></Create>
+    } else if (mode=== 'UPDATE') {
+        let title, body = null;
+
+        for (let i = 0; i < topics.length; i++) {
+            if (topics[i].id === id) {
+                title = topics[i].title;
+                body = topics[i].body;
+            }
+        }
+
+        content=
+            <Update title={title} body={body} onUpdate={(title, body) => {
+                    const newTopics = [...topics];
+                    const updatedTopic = {id: id, title: title, body: body};
+                    for (let i= 0; i<newTopics.length; i++) {
+                        if (newTopics[i].id === id) {
+                            newTopics[i] = updatedTopic;
+                            break;
+                        }
+                    }
+                    setTopics(newTopics);
+                    setMode('READ');
+                }}>
+            </Update>;
     }
 
     return (
-      <div>
-        <Header title="REACT!!" onChangeMode={()=> {
-            // mode = 'WELCOME'; -> 일케하면 안되는이유 : App 함수는 변하지 않기 때문에 Return 값에는 변화가 없다 = useState 쓰는 이유
-            setMode('WELCOME'); // state를 바꿈으로써 App 컴포넌트가 다시 실행됨.
-        }}></Header>
-        <Nav topics={topics} onChangeMode={() => {
-            // mode='READ';
-            setMode('READ');
-        }}></Nav>  {/* 표현식: 중괄호로 표현 */}
-          {content}
-      </div>
+        <div>
+            <Header title="REACT!!" onChangeMode={() => {
+                setMode('WELCOME');
+            }}>
+            </Header>
+            <Nav topics={topics} onChangeMode={(_id) => {
+                // mode='READ';
+                setMode('READ');
+                setId(_id);
+            }}>
+            </Nav>
+            {content}
+            <ul>
+                <li>
+                    <a href="/create" onClick={(e) => {
+                        e.preventDefault();
+                        setMode('CREATE');
+                    }}>
+                        Create
+                    </a>
+                </li>
+                {contextControl}
+            </ul>
+        </div>
     );
 }
 
