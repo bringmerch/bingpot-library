@@ -1,4 +1,5 @@
 > 리액트 입문 
+> 이 프로젝트는 create-react-app 패키지
 
 # HOW TO RUN 
 
