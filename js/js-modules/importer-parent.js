@@ -1,6 +1,8 @@
-import runImporterChild from './importer-child.js';
-import {funnyName} from './importer-child.js';
+import withoutParam from './importer-child.js';
+import {withParam} from './importer-child.js';
 
-runImporterChild();
-console.log('wait...');
-funnyName('haha.');
+withoutParam();
+console.log();
+withParam("aye aye cap!");
+
+// window.funnyName = funnyName; // 지양. 모듈왜씀

@@ -11,7 +11,7 @@ import {five, six} from './i-am-module.js';
 
 import {alias} from './i-am-module.js';
 
-export default function runImporterChild() {
+export default function withoutParam() {
     defaultExport();
     whatever();
 
@@ -28,7 +28,7 @@ export default function runImporterChild() {
     alias();
 }
 
-export function funnyName(value) {
+export function withParam(value) {
     defaultExport(value);
     whatever(value);
 
