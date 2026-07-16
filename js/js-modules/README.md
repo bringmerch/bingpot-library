@@ -1,5 +1,6 @@
-### js-modules 디렉터리 설명
-> ES Module - export, import 연습 
+## u can learn this....
+> ES Module - export, import 사용법
+>> 키워드 : export default, named export
 
-### how to run 
+## how to run 
 > importer-parent.js 또는 import-export.html 실행   

@@ -1,0 +1,3 @@
+## u can learn this....
+1. jquery cdn 통해 로드
+2. jquery 간단사용법
