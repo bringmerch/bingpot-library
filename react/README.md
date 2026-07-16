@@ -1,5 +1,5 @@
 > 리액트 입문 
-> 이 프로젝트는 create-react-app 패키지
+> 이 프로젝트는 빙팟 경로에서 create-react-app 패키지를 사용해 만들었음.
 
 # HOW TO RUN 
 

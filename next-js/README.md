@@ -1,5 +1,5 @@
 ### 이 프로젝트 initialization 과정
-> 1. npm create next-app (또는 npm init next-app)
+> 1. 빙팟 경로에서 `npm create next-app` 또는 `npm init next-app` 실행 
 
 
 
