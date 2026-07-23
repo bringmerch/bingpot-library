@@ -1,4 +1,5 @@
 ### 이 프로젝트 initialization 과정
+### 이 프로젝트는 create-react-router 패키지를 통해 만들었음.
 1. 빙팟 경로에서 `npm create react-router@7.16.0` 실행 (latest인 8버전 설치x)
 
 ___
